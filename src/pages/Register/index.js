@@ -1,13 +1,39 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link, useHistory } from 'react-router-dom';
 import { FiArrowLeft } from 'react-icons/fi';
 
 import LogoImg from '../../components/shared/LogoImg';
 import DefaultButton from '../../components/shared/DefaultButton';
 
+import api from '../../services/api';
+
 import './styles.css';
 
 export default function Register() {
+  const history = useHistory();
+  
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [whatsApp, setWhatsApp] = useState('');
+  const [city, setCity] = useState('');
+  const [fu, setFu] = useState('');
+
+  async function handleRegister(e) {
+    e.preventDefault();
+
+    const data = { name, email, whatsApp, city, fu };
+
+    try {
+      const response = await api.post('ngo', data);
+
+      alert(`Your ID: ${response.data.id}`);
+
+      history.push('/');
+    } catch (error) {
+      alert(`Could not register.`)
+    }
+  }
+
   return (
     <div className="register-container">
       <div className="content">
@@ -22,14 +48,35 @@ export default function Register() {
           </Link>
         </section>
 
-        <form>
-          <input placeholder="Name" />
-          <input type="email" placeholder="E-mail" />
-          <input placeholder="WhatsApp" />
+        <form onSubmit={ handleRegister }>
+          <input
+            placeholder="Name"
+            value={ name }
+            onChange={ e => setName(e.target.value) }
+          />
+
+          <input
+            type="email" placeholder="E-mail"
+            value={ email }
+            onChange={ e => setEmail(e.target.value) }
+          />
+          <input
+            placeholder="WhatsApp"
+            value={ whatsApp }
+            onChange={ e => setWhatsApp(e.target.value) }
+          />
 
           <div className="input-group">
-            <input placeholder="City" />
-            <input placeholder="FU" style={{ width: 80 }} />
+            <input
+              placeholder="City"
+              value={ city }
+              onChange={ e => setCity(e.target.value) }
+            />
+            <input
+              placeholder="FU" style={{ width: 80 }}
+              value={ fu }
+              onChange={ e => setFu(e.target.value) }
+            />
           </div>
 
           <DefaultButton type="submit">

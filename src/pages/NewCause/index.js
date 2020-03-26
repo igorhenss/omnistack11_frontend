@@ -1,13 +1,41 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link, useHistory } from 'react-router-dom';
 import { FiArrowLeft } from 'react-icons/fi';
 
 import LogoImg from '../../components/shared/LogoImg';
 import DefaultButton from '../../components/shared/DefaultButton';
 
+import api from '../../services/api';
+
 import './styles.css';
 
 export default function NewCause() {
+  const history = useHistory();
+
+  const ngoId = localStorage.getItem('ngoId');
+
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
+  const [value, setValue] = useState('');
+
+  async function handleCauseCreation(e) {
+    e.preventDefault();
+
+    const data = { title, description, value };
+
+    try {
+      await api.post('/cause/new', data, {
+        headers: {
+          Authorization: ngoId,
+        }
+      });
+
+      history.push('/profile');
+    } catch (error) {
+      alert('Could not create cause.')
+    }
+  }
+
   return (
     <div className="new-cause-container">
       <div className="content">
@@ -22,10 +50,22 @@ export default function NewCause() {
           </Link>
         </section>
 
-        <form>
-          <input placeholder="Title" />
-          <textarea placeholder="Description" />
-          <input placeholder="Needed amount (USD)" />
+        <form onSubmit={ handleCauseCreation }>
+          <input
+            placeholder="Title"
+            value={ title }
+            onChange={ e => setTitle(e.target.value) }
+          />
+          <textarea
+            placeholder="Description"
+            value={ description }
+            onChange={ e => setDescription(e.target.value) }
+          />
+          <input
+            placeholder="Needed amount (USD)"
+            value={ value }
+            onChange={ e => setValue(e.target.value) }
+          />
 
           <DefaultButton type="submit">
             Create cause!
