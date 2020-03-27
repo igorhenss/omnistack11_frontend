@@ -14,17 +14,17 @@ export default function Register() {
   
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
-  const [whatsApp, setWhatsApp] = useState('');
+  const [whatsapp, setWhatsapp] = useState('');
   const [city, setCity] = useState('');
   const [fu, setFu] = useState('');
 
   async function handleRegister(e) {
     e.preventDefault();
 
-    const data = { name, email, whatsApp, city, fu };
+    const data = { city, email, fu, name, whatsapp };
 
     try {
-      const response = await api.post('ngo', data);
+      const response = await api.post('/ngo/register', data);
 
       alert(`Your ID: ${response.data.id}`);
 
@@ -62,8 +62,8 @@ export default function Register() {
           />
           <input
             placeholder="WhatsApp"
-            value={ whatsApp }
-            onChange={ e => setWhatsApp(e.target.value) }
+            value={ whatsapp }
+            onChange={ e => setWhatsapp(e.target.value) }
           />
 
           <div className="input-group">

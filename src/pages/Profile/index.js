@@ -58,18 +58,18 @@ export default function Profile() {
         </button>
       </header>
 
-      <h1>Casos cadastrados</h1>
+      <h1>Current causes</h1>
 
       <ul>
         { causes.map(cause => (
           <li key={ cause.id }>
-            <strong>CASO:</strong>
+            <strong>Cause:</strong>
             <p>{ cause.title }</p>
 
-            <strong>DESCRIÇÃO:</strong>
+            <strong>Description:</strong>
             <p>{ cause.description }</p>
 
-            <strong>VALOR:</strong>
+            <strong>Value:</strong>
             <p>{ Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(cause.value) }</p>
 
             <button type="button" onClick={ () => handleCauseDeletion(cause.id) }>
